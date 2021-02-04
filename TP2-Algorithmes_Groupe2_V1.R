@@ -141,7 +141,8 @@ Usualdata_clean<-Usualdata_clean[dropoff_latitude>=40 & dropoff_latitude<=45,]
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
-
+library(biganalytics)
+summary(BDdata_clean)
 #****************#
 # TO BE DONE
 #****************#
