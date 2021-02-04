@@ -171,7 +171,24 @@ hist(Usualdata_clean[,"pickup_latitude"],main="pickup_latitude")
 hist(Usualdata_clean[,"dropoff_longitude"],main="dropoff_longitude")
 hist(Usualdata_clean[,"dropoff_latitude"],main="dropoff_latitude")
 
+#****************#
+# LE CODE SUIVANT FAIT PLANTER R: VOIR COMMENT FAIRE POUR LES PAIRPLOTS
+#****************#
+       
+#pairplots:
+#graphiques du coût des taxis (fare_amount) en fonction de chaque variable
+plot(Usualdata_clean[,"fare_amount"],Usualdata_clean[,"pickup_longitude"],pch=19,cex=0.8)
+plot(Usualdata_clean[,"fare_amount"],Usualdata_clean[,"pickup_latitude"],pch=19,cex=0.8)
+plot(Usualdata_clean[,"fare_amount"],Usualdata_clean[,"dropoff_longitude"],pch=19,cex=0.8)
+plot(Usualdata_clean[,"fare_amount"],Usualdata_clean[,"dropoff_latitude"],pch=19,cex=0.8)
 
+variables<-c("fare_amount","pickup_longitude","pickup_latitude",
+             "dropoff_longitude", "dropoff_latitude")
+#ensemble des paires de scatter plots avec la fonction pairs
+pairs(Usualdata_clean[,variables])       
+       
+       
+       
 # Séparer la variable à prédire ("fare_amount") des autres variables d'entrée
 # Créer un objet avec variables d'entrée et un objet avec valeurs de sortie (i.e. "fare_amount")
 
