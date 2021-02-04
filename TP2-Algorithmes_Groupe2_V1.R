@@ -140,11 +140,20 @@ Usualdata_clean<-Usualdata_clean[dropoff_latitude>=40 & dropoff_latitude<=45,]
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+
 library(biganalytics)
 summary(BDdata_clean)
+"""
+summary(BDdata_clean)
+                          min         max        mean         NAs
+fare_amount        -300.00000 93963.36000    11.34505     0.00000
+pickup_longitude  -3442.05957  3457.62568   -72.50968     0.00000
+pickup_latitude   -3492.26377  3408.78957    39.91979     0.00000
+dropoff_longitude -3442.02457  3457.62235   -72.51121   376.00000
+dropoff_latitude  -3547.88670  3537.13253    39.92068   376.00000
+"""
 #****************#
-# TO BE DONE
+# A COMPLETER POUR LE FILTRAGE DES VALEURS ABERRANTES
 #****************#
 
 
