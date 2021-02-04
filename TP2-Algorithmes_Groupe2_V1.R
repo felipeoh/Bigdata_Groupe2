@@ -162,11 +162,14 @@ dropoff_latitude  -3547.88670  3537.13253    39.92068   376.00000
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#histogramme de la variable a expliquer fare_amount
+hist(Usualdata_clean[,"fare_amount"],main="fare_amount")
 
-#****************#
-# TO BE DONE
-#****************#
+#histogramme des variables explicatives
+hist(Usualdata_clean[,"pickup_longitude"],main="pickup_longitude")
+hist(Usualdata_clean[,"pickup_latitude"],main="pickup_latitude")
+hist(Usualdata_clean[,"dropoff_longitude"],main="dropoff_longitude")
+hist(Usualdata_clean[,"dropoff_latitude"],main="dropoff_latitude")
 
 
 # Séparer la variable à prédire ("fare_amount") des autres variables d'entrée
