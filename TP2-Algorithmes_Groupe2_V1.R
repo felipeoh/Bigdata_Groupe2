@@ -376,7 +376,36 @@ REPONSE ECRITE (3 lignes maximum)
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+formule_modele<-as.formula(fare_amount~.)
+#lm: fonction de regression lineaire
+modele_lm<-lm(formule_modele,data=Usualdata_clean)
+summary(modele_lm)
+       
+       """
+summary(modele_lm)
+
+Call:
+lm(formula = formule_modele, data = Usualdata_clean)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-22.57  -5.32  -2.82   1.18 686.13 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(>|t|)    
+(Intercept)       12.0286087  0.0277514 433.442  < 2e-16 ***
+pickup_longitude   0.0024522  0.0005259   4.663 3.12e-06 ***
+pickup_latitude   -0.0012860  0.0005622  -2.288   0.0222 *  
+dropoff_longitude  0.0046030  0.0005444   8.455  < 2e-16 ***
+dropoff_latitude  -0.0031840  0.0005179  -6.148 7.83e-10 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 9.782 on 5116832 degrees of freedom
+  (316140 observations deleted due to missingness)
+Multiple R-squared:  0.0001243,	Adjusted R-squared:  0.0001236 
+F-statistic: 159.1 on 4 and 5116832 DF,  p-value: < 2.2e-16
+"""
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
