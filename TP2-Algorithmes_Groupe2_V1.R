@@ -130,13 +130,29 @@ CODE
 CODE
 attach(Usualdata_clean)
 summary(Usualdata_clean)
+sapply(Usualdata_clean, function(x) sum(is.na(x)))
 
-Usualdata_clean<-Usualdata_clean[fare_amount>=0,]
-Usualdata_clean<-Usualdata_clean[pickup_longitude>=-76 & pickup_longitude<=-70,]
-Usualdata_clean<-Usualdata_clean[dropoff_longitude>=-76 & dropoff_longitude  <=-70,]
+Usualdata_clean<-Usualdata_clean[Usualdata_clean$fare_amount>=0,]
 
-Usualdata_clean<-Usualdata_clean[pickup_latitude>=40 & pickup_latitude <=45,]
-Usualdata_clean<-Usualdata_clean[dropoff_latitude>=40 & dropoff_latitude<=45,]
+#Usualdata_clean<-Usualdata_clean[pickup_longitude>=-76 & pickup_longitude<=-70,]
+Usualdata_clean<-Usualdata_clean[Usualdata_clean$pickup_longitude>=-76,]
+Usualdata_clean<-Usualdata_clean[Usualdata_clean$pickup_longitude<=-70,]
+
+#Usualdata_clean<-Usualdata_clean[dropoff_longitude>=-76 & dropoff_longitude<=-70,]
+Usualdata_clean<-Usualdata_clean[Usualdata_clean$dropoff_longitude>=-76,]
+Usualdata_clean<-Usualdata_clean[Usualdata_clean$dropoff_longitude<=-70,]
+
+#Usualdata_clean<-Usualdata_clean[pickup_latitude>=40 & pickup_latitude <=45,]
+Usualdata_clean<-Usualdata_clean[Usualdata_clean$pickup_latitude>=40,]
+Usualdata_clean<-Usualdata_clean[Usualdata_clean$pickup_latitude<=45,]
+
+#Usualdata_clean<-Usualdata_clean[dropoff_latitude>=40 & dropoff_latitude<=45,]
+Usualdata_clean<-Usualdata_clean[Usualdata_clean$dropoff_latitude>=40,]
+Usualdata_clean<-Usualdata_clean[Usualdata_clean$dropoff_latitude<=45,]
+
+attach(Usualdata_clean)
+summary(Usualdata_clean)
+sapply(Usualdata_clean, function(x) sum(is.na(x)))
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
