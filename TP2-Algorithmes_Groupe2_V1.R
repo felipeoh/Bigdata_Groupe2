@@ -199,8 +199,9 @@ CODE
 
 CODE
 
-x_scale<-scale(x_input)
-y_scale<-scale(y_input)
+x_scale<-as.data.frame(scale(x_input))
+y_scale<-as.data.frame(scale(y_output))
+colnames(y_scale)=("fare_amount")
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
