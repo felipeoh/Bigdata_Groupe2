@@ -82,9 +82,9 @@ UsualData_clean=UsualData.dropna()
 
 # ---------- Utiliser une librairie usuelle
 
-variable_reg=["fare_amount","pickup_longitude","pickup_latitude",
+variables=["fare_amount","pickup_longitude","pickup_latitude",
                                "dropoff_longitude", "dropoff_latitude"]
-UsualData_clean=pd.DataFrame(UsualData_clean,columns=variable_reg,dtype='float')
+UsualData_clean=pd.DataFrame(UsualData_clean,columns=variables,dtype='float')
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -97,8 +97,24 @@ UsualData_clean=pd.DataFrame(UsualData_clean,columns=variable_reg,dtype='float')
 
 # ---------- Utiliser une librairie usuelle
 
-#CODE
 
+import pandas as pd
+caracteristiques_variables=UsualData_clean.describe()
+print(caracteristiques_variables)
+
+"""
+        fare_amount  pickup_longitude  ...  dropoff_longitude  dropoff_latitude
+count  5.542347e+06      5.542347e+06  ...       5.542347e+06      5.542347e+06
+mean   1.133738e+01     -7.250974e+01  ...      -7.250740e+01      3.991951e+01
+std    9.783154e+00      1.275195e+01  ...       1.240406e+01      9.764199e+00
+min   -1.000000e+02     -3.383285e+03  ...      -3.366536e+03     -3.481141e+03
+25%    6.000000e+00     -7.399206e+01  ...      -7.399140e+01      4.073404e+01
+50%    8.500000e+00     -7.398180e+01  ...      -7.398016e+01      4.075316e+01
+75%    1.250000e+01     -7.396708e+01  ...      -7.396364e+01      4.076812e+01
+max    6.981600e+02      3.239513e+03  ...       3.429641e+03      3.375202e+03
+
+[8 rows x 5 columns]
+"""
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 #CODE
@@ -110,8 +126,12 @@ UsualData_clean=pd.DataFrame(UsualData_clean,columns=variable_reg,dtype='float')
 # ---------- Utiliser une librairie usuelle
 
 #CODE
-
-
+import matplotlib.pyplot as plt
+#plusieurs histogrammes avec boucle for sur les noms de variables
+for var in  variables:
+    UsualData_clean[var].plot.hist()
+    plt.title(var)
+    plt.show()
 
 
 
@@ -123,7 +143,16 @@ UsualData_clean=pd.DataFrame(UsualData_clean,columns=variable_reg,dtype='float')
 
 # ---------- Utiliser une librairie usuelle
 
-#CODE
+#copier les donnees
+input_var=variables.copy()
+#enlever la variable cible
+input_var.remove("fare_amount")
+
+#creer les variables X et y
+X,y=UsualData_clean[input_var],UsualData_clean["fare_amount"]
+
+
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -136,13 +165,19 @@ UsualData_clean=pd.DataFrame(UsualData_clean,columns=variable_reg,dtype='float')
 
 # ---------- Utiliser une librairie usuelle
 
-#CODE
+#on standardise les valeurs avec la fonction scale de la sous librairie 
+#preprocessing de sklearn
+
+X_scaled=preprocessing.scale(X)
+y_scaled=preprocessing.scale(y)
 
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 
 #CODE
+
+
 
 
 
