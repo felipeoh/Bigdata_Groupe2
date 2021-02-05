@@ -398,8 +398,8 @@ formule_modele<-as.formula(fare_amount~.)
 #lm: fonction de regression lineaire
 modele_lm<-lm(formule_modele,data=Usualdata_clean)
 summary(modele_lm)
-       
-       """
+
+"""
 Call:
 lm(formula = formule_modele, data = Usualdata_clean)
 
@@ -421,7 +421,6 @@ Residual standard error: 8.556 on 5425725 degrees of freedom
 Multiple R-squared:  0.2189,	Adjusted R-squared:  0.2189 
 F-statistic: 3.801e+05 on 4 and 5425725 DF,  p-value: < 2.2e-16
 """
-
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
@@ -431,10 +430,13 @@ CODE
 
 ### Q5.2 - Que pouvez-vous dire des résultats du modèle? Quelles variables sont significatives?
 
+
 #Toutes les variables explicatives sont significatives (pickup_longitude,pickup_latitude,dropoff_longitude,dropoff_latitude):
 #elles ont toutes une pvalue <2e-16 donc inférieure à 5%.
 #La plus fortement liée à la variable à estimer, fare_amount, est pickup_longitude. La longitude du début de la course du taxi a un impact important
 #sur le prix de la course du taxi.
+
+
 
 ### Q5.3 - Prédire le prix de la course en fonction de nouvelles entrées avec une régression linéaire
 
@@ -443,13 +445,34 @@ CODE
 
 
 # ---------- Utiliser une librairie usuelle
+#on cree les 3 echantillons: 60% de la base usual clean pour l echantillon d apprentissage
+#puis 50% des 40% restants pour validation et test, ce qui fait 20% et 20%
+idx_train<-sample(round(nrow(Usualdata_clean)*0.6))
+Usualdata_clean_apprentissage<-Usualdata_clean[idx_train,]
+intermediaire<-Usualdata_clean[-idx_train,]
+idx_train_bis<-sample(round(nrow(intermediaire)*0.5))
+Usualdata_clean_validation<-intermediaire[idx_train_bis,]
+Usualdata_clean_test<-intermediaire[-idx_train_bis,]
 
-CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
-
+#****************#
+# TO BE DONE
+#****************#
+""" a faire
+library(biglm)
+formule_modele<-as.formula(paste0("fare_amount~",paste0(input_var,collapse = " + ")))
+modele_biglm<-bigglm(formule_modele,data=donnes_reg)
+summary(modele_biglm)
+prediction_biglm<-predict(modele_biglm,donnees_reg)
+predict_index<-as.integer(rownames(prediction_biglm))
+prediction_biglm<-predict(modele_biglm,donnees_reg)
+predict_index<-as.integer(rownames(prediction_biglm))
+plot(y_output[predict_index],prediction_biglm,pch=19,cex=0.8)
+summary(modele_biglm)
+"""
 
 # Réaliser la régression linéaire sur l'échantillon d'apprentissage, tester plusieurs valeurs
 # de régularisation (hyperpaUsualètre de la régression linéaire) et la qualité de prédiction sur l'échantillon de validation. 
@@ -457,28 +480,114 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+formule_modele<-as.formula(fare_amount~.)
+#lm: fonction de regression lineaire
+modele_lm_Usualdata_clean_apprentissage<-lm(formule_modele,data=Usualdata_clean_apprentissage)
+summary(modele_lm_Usualdata_clean_apprentissage)
+"""
+
+Call:
+lm(formula = formule_modele, data = Usualdata_clean_apprentissage)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-400.19   -4.43   -1.88    2.00  479.29 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(>|t|)    
+(Intercept)       13086.6371    14.0937   928.5   <2e-16 ***
+pickup_longitude     72.5386     0.1269   571.6   <2e-16 ***
+pickup_latitude     -59.9590     0.1774  -338.1   <2e-16 ***
+dropoff_longitude    46.7456     0.1335   350.1   <2e-16 ***
+dropoff_latitude    -44.3640     0.1631  -272.1   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 8.569 on 3255433 degrees of freedom
+Multiple R-squared:  0.2171,	Adjusted R-squared:  0.2171 
+F-statistic: 2.257e+05 on 4 and 3255433 DF,  p-value: < 2.2e-16
+"""
+
+#tester la qualité de prédiction sur l'échantillon de validation
+x_input_validation=Usualdata_clean_validation[,c("pickup_longitude","pickup_latitude",
+                           "dropoff_longitude", "dropoff_latitude")]
+y_output_validation=Usualdata_clean_validation[,"fare_amount"]
+x_scale_validation<-as.data.frame(scale(x_input_validation))
+y_scale_validation<-as.data.frame(scale(y_output_validation))
+colnames(y_scale_validation)=("fare_amount")
+
+prediction_lm_Usualdata_clean_validation<-predict(modele_lm_Usualdata_clean_apprentissage,x_input_validation)
+print(prediction_lm_Usualdata_clean_validation)
+plot(y_output_validation,prediction_lm_Usualdata_clean_validation,pch=19,cex=0.8)
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
-
-CODE
 
 # Calculer le RMSE et le R² sur le jeu de test.
 
-
-
 # ---------- Utiliser une librairie usuelle
 
-CODE
+modele_lm_Usualdata_clean_test<-lm(formule_modele,data=Usualdata_clean_test)
+summary(modele_lm_Usualdata_clean_test)
+"""
+Call:
+lm(formula = formule_modele, data = Usualdata_clean_test)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-274.40   -4.39   -1.85    2.01  490.69 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(>|t|)    
+(Intercept)       13415.7778    24.3983   549.9   <2e-16 ***
+pickup_longitude     74.5661     0.2212   337.1   <2e-16 ***
+pickup_latitude     -58.0679     0.3097  -187.5   <2e-16 ***
+dropoff_longitude    49.9563     0.2310   216.3   <2e-16 ***
+dropoff_latitude    -44.8229     0.2849  -157.3   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 8.517 on 1085141 degrees of freedom
+Multiple R-squared:  0.225,	Adjusted R-squared:  0.225 
+F-statistic: 7.874e+04 on 4 and 1085141 DF,  p-value: < 2.2e-16
+"""
+
+#Le R² est 0.225
+
+#RMSE: on utilise la fonction rmse(actual, predicted)
+x_input_test=Usualdata_clean_test[,c("pickup_longitude","pickup_latitude",
+                                     "dropoff_longitude", "dropoff_latitude")]
+y_output_test=Usualdata_clean_test[,"fare_amount"]
+x_scale_test<-as.data.frame(scale(x_input_test))
+y_scale_test<-as.data.frame(scale(y_output_test))
+colnames(y_scale_test)=("fare_amount")
+
+prediction_lm_Usualdata_clean_test<-predict(modele_lm_Usualdata_clean_apprentissage,x_input_test)
+#install.packages("Metrics")
+library(Metrics)
+prediction_lm_Usualdata_clean_test<-as.data.frame(prediction_lm_Usualdata_clean_test)
+rmse(y_scale_test,prediction_lm_Usualdata_clean_test)
+
+       
+#****************#
+# A FAIRE: RMSE() RENVOIE une erreur: ne fonctionne pas non plus quand on transforme
+#y_scale_test (valeur réelle de la variable de sortie) et prediction_lm_Usualdata_clean_test (valeur estimée de la variable de sortie)
+# en numérique   
+#****************#
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
-
+#****************#
+# TO BE DONE
+#****************#
+       
 # Quelle est la qualité de la prédiction sur le jeu de test ?
 
+#Le coefficient de détermination R² est faible, à 0.225, donc la qualite de prediction est faible.
+#On peut observer le graphique de la variable y prévue par le modele par rapport à la variable y reelle,
+#sur le jeu de test,avec le code suivant:
+plot(y_output_test,prediction_lm_Usualdata_clean_test,pch=19,cex=0.8)
 
-REPONSE ECRITE (3 lignes maximum)
 
 
 
