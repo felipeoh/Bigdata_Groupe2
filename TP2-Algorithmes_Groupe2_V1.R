@@ -425,15 +425,16 @@ F-statistic: 3.801e+05 on 4 and 5425725 DF,  p-value: < 2.2e-16
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
-
+#****************#
+# TO BE DONE
+#****************#
 
 ### Q5.2 - Que pouvez-vous dire des résultats du modèle? Quelles variables sont significatives?
 
-
-
-REPONSE ECRITE (3 lignes maximum)
-
-
+#Toutes les variables explicatives sont significatives (pickup_longitude,pickup_latitude,dropoff_longitude,dropoff_latitude):
+#elles ont toutes une pvalue <2e-16 donc inférieure à 5%.
+#La plus fortement liée à la variable à estimer, fare_amount, est pickup_longitude. La longitude du début de la course du taxi a un impact important
+#sur le prix de la course du taxi.
 
 ### Q5.3 - Prédire le prix de la course en fonction de nouvelles entrées avec une régression linéaire
 
