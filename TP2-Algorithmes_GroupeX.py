@@ -3,9 +3,6 @@
 Created on Wed Feb 13 19:38:53 2019
 
 @author: 
-BAKOP-KAMDEM Armel
-LAFAY Anne
-OROZCO-HERNANDEZ Felipe
 """
 
 
@@ -40,25 +37,17 @@ import pandas as pd
 dossier="C:/Users/annea/Desktop/TRAVAIL T2/UE10 BIG DATA/Section 2 - Algorithmes du Big Data/Section 2 - TP/TP Big Data Python/train_echantillon.csv"
 
 
-
-
 ### Q1.2 - Importer les jeux de données complets et échantillonnés
 ###        Prediction du prix du taxi à New York - https://www.kaggle.com/c/new-york-city-taxi-fare-prediction/data
 
 
 # ---------- Utiliser une librairie usuelle (version de fichier échantillonnée)
 
-UsualData= pd.read_csv ('C:/Users/annea/Desktop/TRAVAIL T2/UE10 BIG DATA/Section 2 - Algorithmes du Big Data/Section 2 - TP/TP Big Data Python/train_echantillon.csv')
+UsualData= pd.read_csv('C:/Users/annea/Desktop/TRAVAIL T2/UE10 BIG DATA/Section 2 - Algorithmes du Big Data/Section 2 - TP/TP Big Data Python/train_echantillon.csv')
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory) (version complète du fichier)
 
 #CODE
-
-
-
-
-
-
 
 
 #
@@ -71,10 +60,15 @@ UsualData= pd.read_csv ('C:/Users/annea/Desktop/TRAVAIL T2/UE10 BIG DATA/Section
 
 # Enlever les valeurs incorrectes ou manquantes (si pertinent)
 
-
 # ---------- Utiliser une librairie usuelle
 
-#CODE
+from sklearn import preprocessing
+
+#on enleve les variables manquantes avec fonction dropna
+UsualData_clean=UsualData.dropna()
+#Il reste 5542347 observations, 
+#au lieu des 5542385 observations de départ
+#38 observations manquantes ont été supprimées
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -88,7 +82,9 @@ UsualData= pd.read_csv ('C:/Users/annea/Desktop/TRAVAIL T2/UE10 BIG DATA/Section
 
 # ---------- Utiliser une librairie usuelle
 
-#CODE
+variable_reg=["fare_amount","pickup_longitude","pickup_latitude",
+                               "dropoff_longitude", "dropoff_latitude"]
+UsualData_clean=pd.DataFrame(UsualData_clean,columns=variable_reg,dtype='float')
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
