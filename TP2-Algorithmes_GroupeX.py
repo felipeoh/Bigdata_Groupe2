@@ -183,8 +183,6 @@ y_scaled=preprocessing.scale(y)
 
 
 
-
-
 #
 # QUESTION 3 - CLUSTERING DU JEU DE DONNEES
 # 
@@ -332,7 +330,69 @@ y_scaled=preprocessing.scale(y)
 
 # ---------- Utiliser une librairie usuelle
 
-#CODE
+from sklearn import linear_model
+
+regr= linear_model.LinearRegression()
+
+regr.fit(X_scaled,y_scaled)
+
+# Evaluation du modele
+from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error
+y_predict = regr.predict(X_scaled)
+
+#Calcul de l erreur quadratique moyenne (rmse)
+rmse = (np.sqrt(mean_squared_error(y_scaled,y_predict)))
+#rmse=0.9999373484290106
+
+#calcul du R²
+r2=r2_score(y_scaled,y_predict)
+print(r2)
+#R²=0.0001252992167616318
+
+print(regr.intercept_)
+#intercept=9.760390606573518e-16
+print(regr.coef_)
+#coefficients des variables explicatives "pickup_longitude","pickup_latitude",
+#dropoff_longitude", "dropoff_latitude"
+#[ 0.00351443 -0.00107122  0.00582572 -0.00306093]
+
+#Pour obtenir les pvalues, on utilise statsmodels
+#Remarque : on invese X et y dans la spécification du modèle pour cette librairie.
+import statsmodels.api as sm
+model = sm.OLS(y_scaled,X_scaled)
+results = model.fit()
+# Avec  statsmodel, on a une sortie qui ressemble beaucoup à celle de R
+print(results.summary())
+
+"""
+ OLS Regression Results                                
+=======================================================================================
+Dep. Variable:                      y   R-squared (uncentered):                   0.000
+Model:                            OLS   Adj. R-squared (uncentered):              0.000
+Method:                 Least Squares   F-statistic:                              173.6
+Date:                Fri, 05 Feb 2021   Prob (F-statistic):                   5.42e-149
+Time:                        18:54:59   Log-Likelihood:                     -7.8639e+06
+No. Observations:             5542347   AIC:                                  1.573e+07
+Df Residuals:                 5542343   BIC:                                  1.573e+07
+Df Model:                           4                                                  
+Covariance Type:            nonrobust                                                  
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+x1             0.0035      0.001      5.352      0.000       0.002       0.005
+x2            -0.0011      0.001     -1.979      0.048      -0.002   -1.01e-05
+x3             0.0058      0.001      8.670      0.000       0.005       0.007
+x4            -0.0031      0.001     -6.022      0.000      -0.004      -0.002
+==============================================================================
+Omnibus:                  5086820.045   Durbin-Watson:                   2.002
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):        508494903.927
+Skew:                           4.087   Prob(JB):                         0.00
+Kurtosis:                      49.207   Cond. No.                         3.23
+==============================================================================
+"""
+
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -341,9 +401,12 @@ y_scaled=preprocessing.scale(y)
 
 ### Q5.2 - Que pouvez-vous dire des résultats du modèle? Quelles variables sont significatives?
 
-
-
-#REPONSE ECRITE (3 lignes maximum)
+#var1=pickup_longitude,var2=pickup_latitude,var3=dropoff_longitude,var4=dropoff_latitude
+#Les trois variables explicatives les plus significatives sont, par ordre d'importance
+#decroissante: var3=dropoff_longitude, var1=pickup_longitude, var4=dropoff_latitude
+#Elles ont toutes les trois une pvalue nulle donc <5%
+#La variable var2=pickup_latitude est mois significative avec une pvalue de 0.048
+#Elle est neanmoins significative a un seuil de 5% 
 
 
 
@@ -559,5 +622,4 @@ y_scaled=preprocessing.scale(y)
 
 
 #REPONSE ECRITE (3 lignes maximum)
-
 
