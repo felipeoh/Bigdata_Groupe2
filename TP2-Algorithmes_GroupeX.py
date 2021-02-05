@@ -38,7 +38,7 @@ import pandas as pd
 ### Q1.1 - Indiquer le dossier et le fichier cible
 
 dossier="C:/Users/annea/Desktop/TRAVAIL T2/UE10 BIG DATA/Section 2 - Algorithmes du Big Data/Section 2 - TP/TP Big Data Python/train_echantillon.csv"
-train_echantillon=open ("train_echantillon.csv","r",encoding="utf-8")
+
 
 
 
