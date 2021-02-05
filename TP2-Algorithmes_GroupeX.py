@@ -418,7 +418,16 @@ Kurtosis:                      49.207   Cond. No.                         3.23
 
 # ---------- Utiliser une librairie usuelle
 
-#CODE
+idx_train=np.random.rand(len(y_scaled))<0.8
+#on cree jeu entrainement et test
+X_apprentissage,X_intermediaire= X_scaled[idx_train],X_scaled[~idx_train]
+y_apprentissage,y_intermediaire=y_scaled[idx_train],y_scaled[~idx_train]
+
+
+idx_train_bis=np.random.rand(len(y_intermediaire))<0.5
+X_validation,X_test= X_intermediaire[idx_train_bis],X_intermediaire[~idx_train_bis]
+y_validation,y_test=y_intermediaire[idx_train_bis],y_intermediaire[~idx_train_bis]
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -431,7 +440,32 @@ Kurtosis:                      49.207   Cond. No.                         3.23
 
 # ---------- Utiliser une librairie usuelle
 
-#CODE
+regr_app= linear_model.LinearRegression()
+
+regr_app.fit(X_apprentissage,y_apprentissage)
+
+# Evaluation du modele
+from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error
+y_predict_app = regr.predict(X_apprentissage)
+
+#Calcul de l erreur quadratique moyenne (rmse)
+rmse = (np.sqrt(mean_squared_error(y_apprentissage,y_predict_app)))
+print(rmse)
+#rmse=1.0005020337805912
+
+#calcul du R²
+r2=r2_score(y_apprentissage,y_predict_app)
+print(r2)
+#R²=0.00012750782767367852
+
+print(regr_app.intercept_)
+#intercept=0.00012738640200585854
+print(regr_app.coef_)
+#coefficients des variables explicatives "pickup_longitude","pickup_latitude",
+#dropoff_longitude", "dropoff_latitude"
+#[ 0.00347971 -0.00166427  0.00561088 -0.00302047]
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -443,7 +477,27 @@ Kurtosis:                      49.207   Cond. No.                         3.23
 
 # ---------- Utiliser une librairie usuelle
 
-#CODE
+regr_test= linear_model.LinearRegression()
+
+regr_test.fit(X_test,y_test)
+
+# Evaluation du modele
+from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error
+y_predict_test = regr.predict(X_test)
+
+#Calcul de l erreur quadratique moyenne (rmse)
+rmse = (np.sqrt(mean_squared_error(y_test,y_predict_test)))
+print(rmse)
+#rmse=0.9982937218934892
+
+#calcul du R²
+r2=r2_score(y_test,y_predict_test)
+print(r2)
+#R²=0.00014069263284666178
+
+
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -451,8 +505,16 @@ Kurtosis:                      49.207   Cond. No.                         3.23
 
 # Quelle est la qualité de la prédiction sur le jeu de test ?
 
+#Le coefficient de détermination R² est faible, à 0.00014, donc la qualite de prediction est faible.
+#On peut observer le graphique de la variable y prévue par le modele par rapport à la variable y reelle,
+#sur le jeu de test,avec le code suivant:
 
-#REPONSE ECRITE (3 lignes maximum)
+#Visualisation
+plt.scatter(y_test,y_predict_test,color='black')
+#y_scaled: valeur reelle, prediction_biglm: valeur predite
+plt.xticks(())
+plt.yticks(())
+plt.show()
 
 
 
