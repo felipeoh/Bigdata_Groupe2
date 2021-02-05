@@ -26,6 +26,8 @@ OROZCO-HERNANDEZ Felipe
 
 CODE
 library(bigmemory)
+library(biganalytics)
+library(glmnet)
 
 
 #
