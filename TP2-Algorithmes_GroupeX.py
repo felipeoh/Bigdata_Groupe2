@@ -19,11 +19,13 @@ Created on Wed Feb 13 19:38:53 2019
 # 
 
 
+#import des librairies
 
-CODE
-
-
-
+#sys et numpy pour les calculs matriciels
+import sys
+import numpy as np
+#pandas pour lecture donnees
+import pandas as pd
 
 #
 # QUESTION 1 - IMPORT DU JEU DE DONNEES
@@ -32,8 +34,8 @@ CODE
 
 ### Q1.1 - Indiquer le dossier et le fichier cible
 
-
-CODE
+dossier="C:/Users/annea/Desktop/TRAVAIL T2/UE10 BIG DATA/Section 2 - Algorithmes du Big Data/Section 2 - TP/TP Big Data Python/train_echantillon.csv"
+train_echantillon=open ("train_echantillon.csv","r",encoding="utf-8")
 
 
 
@@ -43,12 +45,11 @@ CODE
 
 # ---------- Utiliser une librairie usuelle (version de fichier échantillonnée)
 
-CODE
-
+UsualData= pd.read_csv ('C:/Users/annea/Desktop/TRAVAIL T2/UE10 BIG DATA/Section 2 - Algorithmes du Big Data/Section 2 - TP/TP Big Data Python/train_echantillon.csv')
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory) (version complète du fichier)
 
-CODE
+#CODE
 
 
 
@@ -70,11 +71,11 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 
@@ -84,11 +85,11 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 # Obtenir les caractéristiques statistiques de base des variables d'entrée et de sortie
@@ -97,11 +98,11 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 # Visualiser les distributions des variables d'entrée et de sortie (histogramme, pairplot)
@@ -109,7 +110,7 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 
 
@@ -123,12 +124,12 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 
-CODE
+#CODE
 
 
 # Standardiser la matrice d'entrée et les vecteurs de sortie (créer un nouvel objet)
@@ -136,13 +137,13 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 
-CODE
+#CODE
 
 
 
@@ -162,11 +163,11 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 
@@ -175,7 +176,7 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 
 
@@ -186,7 +187,7 @@ CODE
 
 
 
-REPONSE ECRITE (3 lignes maximum)
+#REPONSE ECRITE (3 lignes maximum)
 
 
 
@@ -198,7 +199,7 @@ REPONSE ECRITE (3 lignes maximum)
 
 
 
-REPONSE ECRITE (3 lignes maximum)
+#REPONSE ECRITE (3 lignes maximum)
 
 
 
@@ -208,7 +209,7 @@ REPONSE ECRITE (3 lignes maximum)
 # ---------- Utiliser une librairie usuelle
 
 
-CODE
+#CODE
 
 
 
@@ -229,11 +230,11 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 ### Q4.2 - Réaliser le diagnostic de variance avec un graphique à barre (barchart)
@@ -243,7 +244,7 @@ CODE
 # ---------- Utiliser une librairie usuelle
 
 
-CODE
+#CODE
 
 
 
@@ -252,7 +253,7 @@ CODE
        
 
 
-REPONSE ECRITE (3 lignes maximum)
+#REPONSE ECRITE (3 lignes maximum)
 
 
 
@@ -265,7 +266,7 @@ REPONSE ECRITE (3 lignes maximum)
 # ---------- Utiliser une librairie usuelle
 
 
-CODE
+#CODE
 
 
 
@@ -273,7 +274,7 @@ CODE
 ### Q4.5 - Comment les variables initiales se situent-elles par rapport aux 2 premières CP? 
 
 
-REPONSE ECRITE (3 lignes maximum)
+#REPONSE ECRITE (3 lignes maximum)
 
 
 
@@ -297,18 +298,18 @@ REPONSE ECRITE (3 lignes maximum)
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 ### Q5.2 - Que pouvez-vous dire des résultats du modèle? Quelles variables sont significatives?
 
 
 
-REPONSE ECRITE (3 lignes maximum)
+#REPONSE ECRITE (3 lignes maximum)
 
 
 
@@ -320,11 +321,11 @@ REPONSE ECRITE (3 lignes maximum)
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 # Réaliser la régression linéaire sur l'échantillon d'apprentissage, tester plusieurs valeurs
@@ -333,11 +334,11 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 # Calculer le RMSE et le R² sur le jeu de test.
 
@@ -345,16 +346,16 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 # Quelle est la qualité de la prédiction sur le jeu de test ?
 
 
-REPONSE ECRITE (3 lignes maximum)
+#REPONSE ECRITE (3 lignes maximum)
 
 
 
@@ -378,11 +379,11 @@ REPONSE ECRITE (3 lignes maximum)
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 # Mener la régression logistique de "fare_binaire" en fonction des entrées standardisées
@@ -390,11 +391,11 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 
@@ -403,7 +404,7 @@ CODE
 
 
 
-REPONSE ECRITE (3 lignes maximum)
+#REPONSE ECRITE (3 lignes maximum)
 
 
 
@@ -416,11 +417,11 @@ REPONSE ECRITE (3 lignes maximum)
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 # Réaliser la régression logistique sur l'échantillon d'apprentissage et en testant plusieurs valeurs
@@ -429,11 +430,11 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 # Calculer la précision (accuracy) et l'AUC de la prédiction sur le jeu de test.
@@ -442,17 +443,17 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 # Quelle est la qualité de la prédiction sur le jeu de test ?
 
 
-REPONSE ECRITE (3 lignes maximum)
+#REPONSE ECRITE (3 lignes maximum)
 
 
 
@@ -473,11 +474,11 @@ REPONSE ECRITE (3 lignes maximum)
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 
@@ -489,11 +490,11 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 # Réaliser la régression avec réseau de neurones sur l'échantillon d'apprentissage et en testant plusieurs 
@@ -502,11 +503,11 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 
 # Calculer le RMSE et le R² de la meilleure prédiction sur le jeu de test.
@@ -514,15 +515,15 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
+#CODE
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
+#CODE
 
 # Quelle est la qualité de la prédiction sur le jeu de test ? Comment se compare-t-elle à la régression linéaire?
 
 
-REPONSE ECRITE (3 lignes maximum)
+#REPONSE ECRITE (3 lignes maximum)
 
 
