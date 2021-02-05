@@ -28,7 +28,7 @@ CODE
 library(bigmemory)
 library(biganalytics)
 library(glmnet)
-
+library(ROCR)
 
 #
 # QUESTION 1 - IMPORT DU JEU DE DONNEES
