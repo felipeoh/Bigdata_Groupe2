@@ -3,6 +3,9 @@
 Created on Wed Feb 13 19:38:53 2019
 
 @author: 
+BAKOP-KAMDEM Armel
+LAFAY Anne
+OROZCO-HERNANDEZ Felipe
 """
 
 
