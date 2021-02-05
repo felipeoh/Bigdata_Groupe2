@@ -400,29 +400,26 @@ modele_lm<-lm(formule_modele,data=Usualdata_clean)
 summary(modele_lm)
        
        """
-summary(modele_lm)
-
 Call:
 lm(formula = formule_modele, data = Usualdata_clean)
 
 Residuals:
-   Min     1Q Median     3Q    Max 
--22.57  -5.32  -2.82   1.18 686.13 
+    Min      1Q  Median      3Q     Max 
+-413.28   -4.42   -1.87    2.00  488.02 
 
 Coefficients:
                     Estimate Std. Error t value Pr(>|t|)    
-(Intercept)       12.0286087  0.0277514 433.442  < 2e-16 ***
-pickup_longitude   0.0024522  0.0005259   4.663 3.12e-06 ***
-pickup_latitude   -0.0012860  0.0005622  -2.288   0.0222 *  
-dropoff_longitude  0.0046030  0.0005444   8.455  < 2e-16 ***
-dropoff_latitude  -0.0031840  0.0005179  -6.148 7.83e-10 ***
+(Intercept)        1.318e+04  1.093e+01  1206.1   <2e-16 ***
+pickup_longitude   7.269e+01  9.832e-02   739.2   <2e-16 ***
+pickup_latitude   -5.952e+01  1.376e-01  -432.5   <2e-16 ***
+dropoff_longitude  4.774e+01  1.035e-01   461.3   <2e-16 ***
+dropoff_latitude  -4.494e+01  1.267e-01  -354.7   <2e-16 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 9.782 on 5116832 degrees of freedom
-  (316140 observations deleted due to missingness)
-Multiple R-squared:  0.0001243,	Adjusted R-squared:  0.0001236 
-F-statistic: 159.1 on 4 and 5116832 DF,  p-value: < 2.2e-16
+Residual standard error: 8.556 on 5425725 degrees of freedom
+Multiple R-squared:  0.2189,	Adjusted R-squared:  0.2189 
+F-statistic: 3.801e+05 on 4 and 5425725 DF,  p-value: < 2.2e-16
 """
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
