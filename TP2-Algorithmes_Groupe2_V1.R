@@ -270,17 +270,55 @@ colnames(y_scale_bd)=("fare_amount")
 
 
 
-### Q3.1 - Réaliser un clustering k-means sur les données d'entrée standardisées
-
-
 # ---------- Utiliser une librairie usuelle
+#centers=nombre de clusters
+#iter.max=nombre maximum d iterations
 
-CODE
+set.seed(20)
+kmeans_clusters<-kmeans(x_input,centers=6,iter.max=100,algorithm = "Lloyd")
+str(kmeans_clusters)
+
+"""
+List of 9
+ $ cluster     : Named int [1:5425730] 4 1 2 5 2 3 1 1 2 5 ...
+  ..- attr(*, "names")= chr [1:5425730] "2" "3" "4" "5" ...
+ $ centers     : num [1:6, 1:4] -74 -74 -74 -74 -74 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:6] "1" "2" "3" "4" ...
+  .. ..$ : chr [1:4] "pickup_longitude" "pickup_latitude" "dropoff_longitude" "dropoff_latitude"
+ $ totss       : num 29560 : variance totale
+ $ withinss    : num [1:6] 1933 3056 986 1273 1372 ...: variance interne a chaque cluster
+ $ tot.withinss: num 15452 : distance totale des points a leur barycentre
+ $ betweenss   : num 14108 : distance entre les points et les barycentres
+ $ size        : int [1:6] 1107233 1121105 1489870 153952 1355942 197628 : nombre de points qu on a dans chaque cluster
+ $ iter        : int 101 : nombre d iterations necessaires pour la convergence
+ $ ifault      : int 2
+ - attr(*, "class")= chr "kmeans"
+ """
+for(cluster_num in 1:10){
+  kmeans_clusters<-kmeans(x_scale,centers=cluster_num,iter.max = 200,algorithm = "Lloyd")
+  print(paste0(cluster_num,
+               "clusters - Inertie: ",
+               kmeans_clusters$tot.withinss))
+}
+
+"""
+[1] "1clusters - Inertie: 21702916.0000079"
+[1] "2clusters - Inertie: 17674348.9938002"
+[1] "3clusters - Inertie: 14506022.126452"
+[1] "4clusters - Inertie: 13421219.1736507"
+[1] "5clusters - Inertie: 12753739.9699624"
+[1] "6clusters - Inertie: 9365473.95103332"
+[1] "7clusters - Inertie: 10592348.6476492"
+[1] "8clusters - Inertie: 10347720.5847138"
+[1] "9clusters - Inertie: 7702293.68061266"
+[1] "10clusters - Inertie: 9326962.04724501"
+"""
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-CODE
-
+#library(biganalytics)
+#kmeans_clusters<-bigkmeans(x_scale,centers=6,iter.max=100,nstart=1,dist="euclid")
 
 
 ### Q3.2 - Tracer la figure de l'inertie intraclusters et du R² en fonction du nombre de  clusters
@@ -288,18 +326,15 @@ CODE
 
 # ---------- Utiliser une librairie usuelle
 
-CODE
-
-
-
-
+             
 
 ### Q3.3 - A partir de combien de clusters on peut dire que partitionner n'apporte plus 
 ###        grand chose? Pourquoi?
 
 
 
-REPONSE ECRITE (3 lignes maximum)
+#Ici il n'y a pas de convergence. Donc l'inertie commence par diminuer, ce qui pourrait nous conduire a choisir 
+#3 ou 4 clusters. Mais ensuite elle réaugmente.
 
 
 
@@ -321,7 +356,9 @@ REPONSE ECRITE (3 lignes maximum)
 # ---------- Utiliser une librairie usuelle
 
 
-CODE
+index_plot<-sample(nrow(x_scale),1000)
+
+pairs(x_scale[index_plot,],col=kmeans_clusters$cluster[index_plot],pch=19)
 
 
 
