@@ -41,7 +41,10 @@ library(ROCR)
 CODE
 setwd("D:/Mis Documentos/Formation Continue/4. Estadística/Toulouse Master/5. Cours M2 Stats/5. T2 2021/Big data/2. Les algorithmes du Big Data/Travaux pratiques")
 fichier.Usualdata<-"train_echantillon.csv"
-fichier.BDdata<-"train.csv"
+fichier.BDdata<-"train_echantillon.csv"
+
+# Le fichier train étant trop lourd pour l'ordinateur, nous allons utiliser le fichier train_echantillon à la fois pour la partie usuelle et 
+#pour la partie libraire big data, en donnant des noms différents aux données et en réalisant des traitements différents
 
 ### Q1.2 - Importer les jeux de données complets et échantillonnés
 ###        Prediction du prix du taxi à New York - https://www.kaggle.com/c/new-york-city-taxi-fare-prediction/data
@@ -113,14 +116,10 @@ Usualdata_clean<-Usualdata_clean[,c( "fare_amount","pickup_longitude","pickup_la
 
 CODE
 
-#****************#
-# TO BE DONE
-#****************#
+BDdata_clean<-BDdata_clean[,c( "fare_amount","pickup_longitude","pickup_latitude",
+                               "dropoff_longitude", "dropoff_latitude")]
 
-#BDdata_clean<-BDdata_clean[,c( "fare_amount","pickup_longitude","pickup_latitude",
-#                               "dropoff_longitude", "dropoff_latitude")]
-
-#BDdata_clean<-as.big.matrix(BDdata_clean)
+BDdata_clean<-as.big.matrix(BDdata_clean)
 
 
 # Obtenir les caractéristiques statistiques de base des variables d'entrée et de sortie
@@ -226,9 +225,16 @@ y_output=Usualdata_clean[,"fare_amount"]
 
 CODE
 
-#****************#
-# TO BE DONE
-#****************#
+all_cols1 <- colnames(BDdata_clean)
+keep_cols1 <- all_cols[!(all_cols %in% c("fare_amount"))]
+
+all_cols2 <- colnames(BDdata_clean)
+keep_cols2 <- all_cols[!(all_cols %in% c("pickup_longitude","pickup_latitude",
+                                        "dropoff_longitude", "dropoff_latitude"))]
+
+x_input_bd<-BDdata_clean[,keep_cols1]
+x_input_bd<-as.big.matrix(x_input_bd)
+y_output_bd<-BDdata_clean[,keep_cols2]
 
 # Standardiser la matrice d'entrée et les vecteurs de sortie (créer un nouvel objet)
 
