@@ -694,7 +694,7 @@ plt.show()
 #CODE
 from sklearn.preprocessing import StandardScaler
 X, y = UsualData_clean[input_var], UsualData_clean["fare_amount"] 
-X_scaled - StandardScaler().fit_transform(X)
+X_scaled = StandardScaler().fit_transform(X)
 
 y.plot.hist
 y.mean() 
@@ -713,6 +713,12 @@ y_binaire[y>y.median()]= 1
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 #CODE
+from sklearn.preprocessing import StandardScaler
+X_big, y_big = BigData_clean[input_var], BigData_clean["fare_amount"] 
+X_scaled_bd2 = StandardScaler().fit_transform(X_big)
+
+y_binaire_bd = np.zeros(len(y))
+y_binaire_bd[y>y.median()]= 1
 
 
 # Mener la régression logistique de "fare_binaire" en fonction des entrées standardisées
@@ -732,7 +738,14 @@ pred_proba_logreg = log_reg.predict_proba(X_scaled)
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 #CODE
+import dask_ml
+from dask_ml.linear_model import LogisticRegression
 
+log_reg_bd=dask_ml.linear_model.LogisticRegression()
+log_reg_bd.fit(X_scaled_bd2,y_binaire_bd)
+
+prediction_biglogreg = log_reg_bd.predict(X_scaled_bd2)
+log_reg_bd.score(X_scaled_bd2,y_binaire_bd)
 
 
 
@@ -775,6 +788,13 @@ ytest, yvalidation = ytest2[idx_train2], ytest2[~idx_train2]
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 #CODE
+idx_train_bd = np.random.rand(len(y_binaire_bd)) < 0.6
+Xtrain_bd, Xtest2_bd = X_scaled_bd2[idx_train_bd], X_scaled_bd2[~idx_train_bd]
+ytrain_bd, ytest2_bd = y_binaire_bd[idx_train_bd], y_binaire_bd[~idx_train_bd]
+
+idx_train2_bd = np.random.rand(len(ytest2_bd)) < 0.5
+Xtest_bd, Xvalidation_bd = Xtest2_bd[idx_train2_bd], Xtest2_bd[~idx_train2_bd]
+ytest_bd, yvalidation_bd = ytest2_bd[idx_train2_bd], ytest2_bd[~idx_train2_bd]
 
 
 # Réaliser la régression logistique sur l'échantillon d'apprentissage et en testant plusieurs valeurs
