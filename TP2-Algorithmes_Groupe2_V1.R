@@ -250,6 +250,15 @@ colnames(y_scale)=("fare_amount")
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
+#Après avoir essayé plusieurs méthodes pour traiter les big matrix et n'ayant pas étudié ce type d'objets en cours,
+#nous procedons à traiter la big.matrix comme un df
+
+x_input_bd<-x_input_bd[]
+x_input_bd<-as.data.frame(x_input_bd)
+
+x_scale_bd<-as.data.frame(scale(x_input_bd))
+y_scale_bd<-as.data.frame(scale(y_output_bd))
+colnames(y_scale_bd)=("fare_amount")
 
 
 
