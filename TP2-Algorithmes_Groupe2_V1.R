@@ -327,6 +327,47 @@ CODE
 # ---------- Utiliser une librairie usuelle
 
 CODE
+summary(x_input)
+
+"""
+pickup_longitude pickup_latitude dropoff_longitude dropoff_latitude
+ Min.   :-75.97   Min.   :40.01   Min.   :-76.00    Min.   :40.01   
+ 1st Qu.:-73.99   1st Qu.:40.74   1st Qu.:-73.99    1st Qu.:40.74   
+ Median :-73.98   Median :40.75   Median :-73.98    Median :40.75   
+ Mean   :-73.98   Mean   :40.75   Mean   :-73.97    Mean   :40.75   
+ 3rd Qu.:-73.97   3rd Qu.:40.77   3rd Qu.:-73.97    3rd Qu.:40.77   
+ Max.   :-70.00   Max.   :44.55   Max.   :-70.00    Max.   :44.72  
+
+"""
+
+ACP_transform<-prcomp(x_scale,
+                      center = TRUE,
+                      scale. = TRUE)
+print(ACP_transform)
+
+"""
+Standard deviations (1, .., p=4):
+  [1] 1.3532537 1.0486154 0.7598965 0.7011902
+
+Rotation (n x k) = (4 x 4):
+  PC1        PC2        PC3        PC4
+pickup_longitude  0.4562510 -0.5673123  0.6278460 -0.2753201
+pickup_latitude   0.5033922  0.5096504  0.3574696  0.5992231
+dropoff_longitude 0.5044226 -0.4676294 -0.6345247  0.3525039
+dropoff_latitude  0.5329064  0.4469183 -0.2745965 -0.6639816
+
+"""
+
+summary(ACP_transform)
+
+"""
+Importance of components:
+                          PC1    PC2    PC3    PC4
+Standard deviation     1.3533 1.0486 0.7599 0.7012
+Proportion of Variance 0.4578 0.2749 0.1444 0.1229
+Cumulative Proportion  0.4578 0.7327 0.8771 1.0000
+
+"""
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -342,16 +383,17 @@ CODE
 
 CODE
 
-
+plot(ACP_transform, xlab="Composante",main="ACP Coordonnées")
 
 
 ### Q4.3 - Combien de composantes doit-on garder? Pourquoi?
        
+"""
+Avec les deux premières composantes principales la variabilité est expliquée à 74%.
+Vu que nous avons 4 variables et une bonne explication avec 2, nous achevons une réduction correcte de dimensionalité.
+Nous proposons de garder les 2 premières composantes.
 
-
-REPONSE ECRITE (3 lignes maximum)
-
-
+"""
 
 
 ### Q4.4 - Tracer un graphique 'biplot' indiquant les variables initiales selon les 2 premières CP
@@ -364,13 +406,19 @@ REPONSE ECRITE (3 lignes maximum)
 
 CODE
 
+taxi.pca <- ACP_transform
+taxi.pca$x<-taxi.pca$x[sample(nrow(taxi.pca$x), 1000), ]
 
-
+biplot(taxi.pca)
 
 ### Q4.5 - Comment les variables initiales se situent-elles par rapport aux 2 premières CP? 
 
 
-REPONSE ECRITE (3 lignes maximum)
+"""
+Les variables de latitude augementent par rapport aux PC1 et PC2
+Les variables de longitude augementent par rapport à la PC1 et diminuent par à la PC2.
+
+"""
 
 
 
@@ -613,6 +661,13 @@ plot(y_output_test,prediction_lm_Usualdata_clean_test,pch=19,cex=0.8)
 
 CODE
 
+y_binaire<-rep(0,nrow(Usualdata_clean))
+y_binaire[y_output>median(y_output)]<-1
+
+Usualdata_clean2<-x_scale
+Usualdata_clean2$fare_amount<-y_binaire
+#table(Usualdata_clean2$fare_amount)
+
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
@@ -625,6 +680,11 @@ CODE
 
 CODE
 
+modele_logit<-glm(fare_amount~pickup_longitude+pickup_latitude+dropoff_longitude+dropoff_latitude,
+                  family = binomial(link = "logit"),
+                  data = Usualdata_clean2)
+
+
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
@@ -634,11 +694,39 @@ CODE
 
 ### Q6.2 - Que pouvez-vous dire des résultats du modèle? Quelles variables sont significatives?
 
+summary(modele_logit)
 
+"""
+glm(formula = fare_amount ~ pickup_longitude + pickup_latitude + 
+    dropoff_longitude + dropoff_latitude, family = binomial(link = "logit"), 
+    data = Usualdata_clean2)
 
-REPONSE ECRITE (3 lignes maximum)
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-8.4904  -1.0912  -0.9395   1.2434   8.4904  
 
+Coefficients:
+                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)       -0.0882813  0.0008915  -99.03   <2e-16 ***
+pickup_longitude   0.2845351  0.0013766  206.69   <2e-16 ***
+pickup_latitude   -0.2202096  0.0012347 -178.36   <2e-16 ***
+dropoff_longitude  0.4218159  0.0014539  290.13   <2e-16 ***
+dropoff_latitude  -0.2508010  0.0012187 -205.80   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 7504422  on 5425729  degrees of freedom
+Residual deviance: 7219606  on 5425725  degrees of freedom
+AIC: 7219616
+
+Nous observons que les 4 variables son significatives.
+Quand le lieu de départ est plus à l'est la probabilité d'avoir une tariffe élévé (long/large voyage) sera plus haute.
+Quand le lieu d'arrivé est plus à l'est la probabilité d'avoir une tariffe élévé (long/large voyage) sera plus haute.
+Le cas contraire s'observe pour les voyages sud-nord ou nord-sud.
+
+"""
 
 ### Q6.3 - Prédire la probabilité que la course soit plus élevée que la médiane
 #           en fonction de nouvelles entrées avec une régression linéaire
@@ -650,6 +738,16 @@ REPONSE ECRITE (3 lignes maximum)
 # ---------- Utiliser une librairie usuelle
 
 CODE
+set.seed(20212)
+idx_train<-sample(round(nrow(Usualdata_clean2)*0.6))
+donnees_train<-Usualdata_clean2[idx_train,]
+donnees_test <-Usualdata_clean2[-idx_train,]
+
+idx_test<-sample(round(nrow(donnees_test)*0.5))
+donnees_test2 <-donnees_test[idx_test,]
+donnees_validation <-donnees_test[-idx_test,]
+donnees_test<-donnees_test2
+rm(donnees_test2)
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -664,6 +762,16 @@ CODE
 
 CODE
 
+modele_train<-glm(fare_amount~pickup_longitude+pickup_latitude+dropoff_longitude+dropoff_latitude,
+                  family = binomial(link = "logit"),
+                  data = donnees_train)
+
+
+train_logit <-glmnet(as.matrix(x_scale),as.factor(y_binaire), family="binomial",alpha=0,standardize = FALSE)
+train_logit$lambda
+coef(train_logit)
+
+
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
@@ -672,10 +780,44 @@ CODE
 # Calculer la précision (accuracy) et l'AUC de la prédiction sur le jeu de test.
 
 
-
 # ---------- Utiliser une librairie usuelle
 
 CODE
+prediction_test <- predict(modele_train, donnees_test, type='response') 
+hist (prediction_test)
+prediction_test_binaire <- rep(0, length(prediction_test)) 
+seuil_binaire <- 0.5 
+prediction_test_binaire[prediction_test > seuil_binaire] <- 1 
+matrice_confusion <- table (donnees_test$fare_amount ,prediction_test_binaire)
+round (matrice_confusion * 100 / sum(matrice_confusion), 1)
+
+"""
+prediction_test_binaire
+       0    1
+  0 47.6  5.3
+  1 33.1 14.0
+"""
+#Accuracy
+Accuracy_test<-(matrice_confusion[1,1]+matrice_confusion[2,2])/sum(matrice_confusion)
+Accuracy_test
+
+"""
+Accuracy_test
+0.6157162
+"""
+
+#AUC
+pr<-prediction(prediction_test,
+               donnees_test$fare_amount)
+auc<-performance(pr,measure="auc")
+auc<-auc@y.values[[1]] 
+auc
+
+"""
+AUC
+0.5980835
+"""
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -685,7 +827,11 @@ CODE
 # Quelle est la qualité de la prédiction sur le jeu de test ?
 
 
-REPONSE ECRITE (3 lignes maximum)
+"""
+La qualité de la prédiction sur le jeu de teste est moyenne.
+Avec un accuracy de 62% et un AUC de 60%.
+Il existe d'autres variables qui doivent avoir un effet sur le tariff, par exemple: durée, type de tariff, etc.
+"""
 
 
 
