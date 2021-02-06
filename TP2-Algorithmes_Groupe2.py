@@ -26,8 +26,10 @@ import sys
 import numpy as np
 #pandas pour lecture donnees
 import pandas as pd
-#sklearn pour la régression logistique
+#Pour la régression logistique
 from sklearn.preprocessing import StandardScaler
+#Pour les PCA
+from sklearn.decomposition import PCA
 
 #
 # QUESTION 1 - IMPORT DU JEU DE DONNEES
@@ -265,6 +267,11 @@ y_scaled=preprocessing.scale(y)
 # ---------- Utiliser une librairie usuelle
 
 #CODE
+import numpy as np
+from sklearn.decomposition import PCA
+pca = PCA(n_components=4)
+pca_resultat = pca.fit_transform(X_scaled)
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -273,22 +280,38 @@ y_scaled=preprocessing.scale(y)
 
 ### Q4.2 - Réaliser le diagnostic de variance avec un graphique à barre (barchart)
 
- 
 
 # ---------- Utiliser une librairie usuelle
 
 
 #CODE
+import numpy as np
+from sklearn.decomposition import PCA
 
+PCs=pca.explained_variance_ratio_
+print(pca.singular_values_)
+print(PCs)
+import matplotlib.pyplot as plt
+bars = ('PC1', 'PC2', 'PC3', 'PC4')
+y_pos = np.arange(len(bars))
+ 
+# Create bar plot
+plt.bar(y_pos,PCs)
+plt.xticks(y_pos, bars)
+plt.show()
 
+"""
+[0.6425408  0.17533291 0.12055986 0.06156644]
+"""
 
 
 ### Q4.3 - Combien de composantes doit-on garder? Pourquoi?
        
-
-
-#REPONSE ECRITE (3 lignes maximum)
-
+"""
+Nous proposons de garder 2 composantes principales.
+Avec les 2 premières nous explicons 81.5% de la variabilité.
+Ceci permet de reduire la dimensionalité à la moyenne et avec +80% de variance.
+"""
 
 
 
@@ -301,20 +324,31 @@ y_scaled=preprocessing.scale(y)
 
 
 #CODE
+xvector = pca.components_[0]
+yvector = pca.components_[1]
 
+xs = pca.transform(X_scaled) [:,0]
+ys = pca.transform(X_scaled)[:,1]
 
+points_plot_index = np.random.randint(0, len(xs), 1000)
 
+for i in points_plot_index :
+    plt.plot(xs[i],ys[i],'bo')
+    #plt.text(xs[i]*1.2, ys[i]*1.2, list(UsualData_clean[input_var].index)[i], color='b')
+
+for i in range(len(xvector)):
+    plt.arrow(0, 0, xvector[i]*max(xs), yvector[i]*max(ys),
+              color='r', width=0.0005, head_width=0.0025)
+    plt.text(xvector[i]*max(xs)*1.2, yvector[i]*max(ys)*1.2,
+             list(UsualData_clean[input_var].columns.values)[i], color='r')
+plt.show()
 
 ### Q4.5 - Comment les variables initiales se situent-elles par rapport aux 2 premières CP? 
 
-
-#REPONSE ECRITE (3 lignes maximum)
-
-
-
-
-
-
+"""
+Les variables initialles de longitude se situent vers le côté negatif de la PC1 et positives par rapport à la PC2.
+Les variables de latitude sont croissantes par rapport aux deux premières PCs.
+"""
 
 
 
