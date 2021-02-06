@@ -719,8 +719,10 @@ modele_logit<-glm(fare_amount~pickup_longitude+pickup_latitude+dropoff_longitude
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
+library(biglm)
 
-
+modele_logit_big<- bigglm(fare_amount~pickup_longitude+ pickup_latitude + dropoff_longitude+ dropoff_latitude,
+                       family=binomial(link=logit), data = BDdata_clean2, chunksize=1000, maxit=10)
 
 
 ### Q6.2 - Que pouvez-vous dire des résultats du modèle? Quelles variables sont significatives?
@@ -752,7 +754,21 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 Residual deviance: 7219606  on 5425725  degrees of freedom
 AIC: 7219616
 
-Nous observons que les 4 variables son significatives.
+summary(modele_logit_big)
+
+Large data regression model: bigglm(fare_amount ~ pickup_longitude + pickup_latitude + dropoff_longitude + 
+    dropoff_latitude, family = binomial(link = logit), data = BDdata_clean2, 
+    chunksize = 1000, maxit = 10)
+Sample size =  5542347 
+                     Coef    (95%     CI)     SE      p
+(Intercept)       -0.1131 -0.1148 -0.1114 0.0009 0.0000
+pickup_longitude   0.0025 -0.0004  0.0053 0.0014 0.0828
+pickup_latitude   -0.0029 -0.0053 -0.0005 0.0012 0.0158
+dropoff_longitude -0.0043 -0.0073 -0.0014 0.0015 0.0034
+dropoff_latitude   0.0008 -0.0013  0.0030 0.0011 0.4400
+
+Nous observons que les 4 variables son significatives pour le modèle normal.
+Dans le cas du modèle big data, la variable dropoff_latitude n'est pas significative
 Quand le lieu de départ est plus à l'est la probabilité d'avoir une tariffe élévé (long/large voyage) sera plus haute.
 Quand le lieu d'arrivé est plus à l'est la probabilité d'avoir une tariffe élévé (long/large voyage) sera plus haute.
 Le cas contraire s'observe pour les voyages sud-nord ou nord-sud.
