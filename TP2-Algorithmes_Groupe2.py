@@ -195,7 +195,6 @@ y_scaled_bd=preprocessing.scale(y_bd)
 
 
 
-
 #
 # QUESTION 3 - CLUSTERING DU JEU DE DONNEES
 # 
@@ -208,22 +207,84 @@ y_scaled_bd=preprocessing.scale(y_bd)
 
 # ---------- Utiliser une librairie usuelle
 
-#CODE
+#Implementation de k_means
+#Preparation des donnees - standardisation
+from sklearn.preprocessing import StandardScaler
+
+#on utilise les donnees standardisees (_scaled)
+
+#Modelisation usuelle (ie en local)
+
+#K means version normale
+from sklearn.cluster import KMeans
+#n_clusters= nombre de clusters
+#random_state= nombre aléatoire initialisant le tirage des barycentres
+#fonction fit sur les donnees centrees normalisees
+kmeans_model=KMeans(n_clusters=4,random_state=1).fit(X_scaled)
+#sorties donc predictions de clusters en utilisant labels sur l'objet qui vient 
+#d etre cree
+labels_modele=kmeans_model.labels_
+print(labels_modele)
+#inertia donne la distance: correspond a total withinss
+#variance totale dans les clusters
+inertia=kmeans_model.inertia_
+print(inertia)
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-#CODE
+#modelisation big data de kmeans clustering avec Dask
 
+#fonction Kmeans de dask
+from dask_ml.cluster import KMeans
+kmeans_dask=KMeans(n_clusters=4)
+kmeans_dask.fit_transform(X_scaled)
+cluster=kmeans_dask.labels_
+print(cluster)
+prediction_kmeans_dask=kmeans_dask.predict(X_scaled_bd) 
+#prediction de la sortie a partir de nouvelles variables d entree
 
+#diagnostic - choix du nombre de clusters
+#quand on a entraine le modele, on peut en faire le diagnostic et notamment 
+#choisir le nombre de clusters optimal
 
+for k in range (1,10):
+    kmeans_model=KMeans(n_clusters=k, random_state=1).fit(X_scaled)
+    labels=kmeans_model.labels_
+    inertia=kmeans_model.inertia_
+    print("Nombre de clusters:" + str(k)+"Inertie:"+str(inertia))
+    
+"""  
+Nombre de clusters:1Inertie:22169387.999999993
+Nombre de clusters:2Inertie:20445632.773052752
+Nombre de clusters:3Inertie:18370731.792631056
+Nombre de clusters:4Inertie:17466502.011337496
+Nombre de clusters:5Inertie:16615631.02471132
+Nombre de clusters:6Inertie:16148438.769385165
+Nombre de clusters:7Inertie:15746105.325751008
+Nombre de clusters:8Inertie:15518406.015413271
+Nombre de clusters:9Inertie:15376890.825024331
+"""
 ### Q3.2 - Tracer la figure de l'inertie intraclusters et du R² en fonction du nombre de  clusters
 
 
+###################################
+#Code de la question Q3.2 à debugger
+##################################
+"""
 # ---------- Utiliser une librairie usuelle
 
-#CODE
+#Visualisation création de clusters
+data_cluster=UsualData_clean["pickup_longitude","pickup_latitude",
+                               "dropoff_longitude", "dropoff_latitude"]
+data_cluster["cluster"]=labels
+#on prend 1000 valeurs
+sample_index=np.random.randint(0,len(X_scaled),1000)
 
+sns.pairplot(data_cluster.loc[sample_index,:],hue="cluster")
+plt.show()
 
+"""
 
 
 
