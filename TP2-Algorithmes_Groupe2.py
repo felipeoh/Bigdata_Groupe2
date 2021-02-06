@@ -169,7 +169,7 @@ X,y=UsualData_clean[input_var],UsualData_clean["fare_amount"]
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 
-#CODE
+X_bd,y_bd=BigData_clean[input_var],BigData_clean["fare_amount"]
 
 
 # Standardiser la matrice d'entrée et les vecteurs de sortie (créer un nouvel objet)
@@ -187,7 +187,8 @@ y_scaled=preprocessing.scale(y)
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 
-#CODE
+X_scaled_bd=preprocessing.scale(X_bd)
+y_scaled_bd=preprocessing.scale(y_bd)
 
 
 
@@ -447,24 +448,24 @@ from dask_glm.estimators import LinearRegression
 #dask_ml.linear_model.LinearRegression
 
 lr=LinearRegression()
-lr.fit(X_scaled,y_scaled)
+lr.fit(X_scaled_bd,y_scaled_bd)
 #X_scaled: matrice d entree transformee, y_scaled: matrice de sortie transformee
 #Prediction modele Big Data
-prediction_biglm=lr.predict(X_scaled)
+prediction_biglm=lr.predict(X_scaled_bd)
 
 
 
 #Visualisation
-plt.scatter(y_scaled,prediction_biglm,color='black')
+plt.scatter(y_scaled_bd,prediction_biglm,color='black')
 #y_scaled: valeur reelle, prediction_biglm: valeur predite
 plt.xticks(())
 plt.yticks(())
 plt.show()
 
 #Diagnostic des modeles
-prediction_biglm=lr.predict(X_scaled)
+prediction_biglm=lr.predict(X_scaled_bd)
 #on applique le score sur entree X_scaled et sortie y_scaled
-lr.score(X_scaled,y_scaled)
+lr.score(X_scaled_bd,y_scaled_bd)
 
 #on imprime les valeurs des coefficients qui sont stockes dans l objet
 #regression lineaire
@@ -472,9 +473,10 @@ print('Coefficients regression lineaire big data:\n ',lr.coef_)
 
 #evaluation de l erreur moyenne de prediction par rapport a la veritable valeur
 print("Erreur (RMS) regression lineaire big data: %.2f"
-      %mean_squared_error(y_scaled,prediction_biglm))
+      %mean_squared_error(y_scaled_bd,prediction_biglm))
 
-print('Variance score regression lineaire bigdata : %.2f' % r2_score(y_scaled,prediction_biglm))
+print('Variance score regression lineaire bigdata : %.2f' % r2_score(y_scaled_bd,prediction_biglm))
+
 
 
 
