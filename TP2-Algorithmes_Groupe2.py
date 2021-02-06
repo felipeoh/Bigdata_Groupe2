@@ -717,6 +717,14 @@ from sklearn.preprocessing import StandardScaler
 X_big, y_big = BigData_clean[input_var], BigData_clean["fare_amount"] 
 X_scaled_bd2 = StandardScaler().fit_transform(X_big)
 
+moyeny=y_big.mean() 
+mediany=y_big.median()
+
+"""
+moyenne 11.337383249349633
+mediane 8.5
+"""
+
 y_binaire_bd = np.zeros(len(y))
 y_binaire_bd[y>y.median()]= 1
 
@@ -748,13 +756,17 @@ prediction_biglogreg = log_reg_bd.predict(X_scaled_bd2)
 log_reg_bd.score(X_scaled_bd2,y_binaire_bd)
 
 
-
 ### Q6.2 - Que pouvez-vous dire des résultats du modèle? Quelles variables sont significatives?
 
-# Les coefficients
+# The coefficients
 from sklearn.linear_model import LogisticRegression
 print('Coefficients: \n', log_reg.coef_) 
 
+from dask_ml.linear_model import LogisticRegression
+print('Coefficients: \n', log_reg_bd.coef_) 
+
+
+#REPONSE ECRITE (3 lignes maximum)
 """
 'pickup_longitude' 'pickup_latitude' 'dropoff_longitude' 'dropoff_latitude'
 Coefficients: 
@@ -815,6 +827,13 @@ pred_proba_Xvalidation = log_reg.predict_proba(Xvalidation)
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 #CODE
+from dask_ml.linear_model import LogisticRegression
+
+log_reg_bd_validation=dask_ml.linear_model.LogisticRegression()
+log_reg_bd_validation.fit(Xvalidation_bd,yvalidation_bd)
+
+prediction_biglogreg2 = log_reg_bd_validation.predict(X_scaled_bd2)
+log_reg_bd.score(X_scaled_bd2,y_binaire_bd)
 
 
 # Calculer la précision (accuracy) et l'AUC de la prédiction sur le jeu de test.
@@ -855,23 +874,23 @@ AUC: 0.4931444903340024
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 #CODE
+prediction_biglogreg2 = log_reg_bd_validation.predict(Xvalidation_bd)
+pred_proba_biglogreg2 = log_reg_bd_validation.predict_proba(Xvalidation_bd)
+
+from sklearn.metrics import confusion_matrix
+
+confusion_mat2 = confusion_matrix(yvalidation_bd, log_reg_bd_validation.predict(Xvalidation_bd))
+confusion_mat2 * 100 / sum(sum(confusion_mat2))
 
 
 # Quelle est la qualité de la prédiction sur le jeu de test ?
 
+
+#REPONSE ECRITE (3 lignes maximum)
 """
-La qualité de la prédiction du jeu de données est moyenne.
-Avec une accuracy de 52% et une AUC de 49% nous considerons qu'il y a d'autres variables qui affectent le tariff.                    
+La qualité du jeu de données est moyenne.
+Avec une accuracy de 52% et une AUC de 49% nous considerons qu'il y a autres variables qui affectent le tariff.                    
 """
-
-
-
-
-
-
-
-
-
 
 
 
