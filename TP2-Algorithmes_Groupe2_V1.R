@@ -696,6 +696,11 @@ Usualdata_clean2$fare_amount<-y_binaire
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
+y_binaire_bd<-rep(0,nrow(BDdata_clean3))
+y_binaire_bd[y_output_bd>median(y_output_bd)]<-1
+
+BDdata_clean2<-x_scale_bd
+BDdata_clean2$fare_amount<-y_binaire_bd
 
 
 # Mener la régression logistique de "fare_binaire" en fonction des entrées standardisées
