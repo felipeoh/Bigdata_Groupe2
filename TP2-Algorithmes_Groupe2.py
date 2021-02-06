@@ -84,7 +84,7 @@ UsualData_clean=UsualData.dropna()
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-#CODE
+BigData_clean=BigData.dropna()
 
 
 
