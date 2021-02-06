@@ -387,7 +387,17 @@ Cumulative Proportion  0.4578 0.7327 0.8771 1.0000
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
+x_scale_bd<-na.omit(x_scale_bd)
+pca <- prcomp(x_scale_bd, center = TRUE, scale. = TRUE)
 
+summary(pca)
+"""
+Importance of components:
+                          PC1    PC2    PC3     PC4
+Standard deviation     1.6032 0.8375 0.6944 0.49625
+Proportion of Variance 0.6425 0.1753 0.1206 0.06157
+Cumulative Proportion  0.6425 0.8179 0.9384 1.00000
+"""
 
 ### Q4.2 - Réaliser le diagnostic de variance avec un graphique à barre (barchart)
 
