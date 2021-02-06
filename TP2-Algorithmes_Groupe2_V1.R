@@ -799,6 +799,15 @@ rm(donnees_test2)
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
+set.seed(20212)
+idx_train_bd<-sample(round(nrow(BDdata_clean2)*0.6))
+donnees_train_bd<-BDdata_clean2[idx_train_bd,]
+donnees_test_bd2 <-BDdata_clean2[-idx_train_bd,]
+
+idx_test_bd<-sample(round(nrow(donnees_test_bd2)*0.5))
+donnees_test_bd <-donnees_test_bd2[idx_test_bd,]
+donnees_validation_bd <-donnees_test_bd2[-idx_test_bd,]
+rm(donnees_test_bd2)
 
 
 # Réaliser la régression logistique sur l'échantillon d'apprentissage et en testant plusieurs valeurs
@@ -822,6 +831,10 @@ coef(train_logit)
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
+modele_logit_big_train<- bigglm(fare_amount~pickup_longitude+ pickup_latitude + dropoff_longitude+ dropoff_latitude,
+                          family=binomial(link=logit), data = donnees_train_bd, chunksize=1000, maxit=10)
+
+summary(modele_logit_big_train)
 
 
 # Calculer la précision (accuracy) et l'AUC de la prédiction sur le jeu de test.
@@ -869,6 +882,16 @@ AUC
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 CODE
+       
+prediction_test_bd <- predict (modele_logit_big_train, donnees_test_bd, type='response')
+prediction_test_bd_binaire <- rep(0, length(prediction_test_bd))
+
+seuil_binaire <- 0.5
+prediction_test_bd_binaire[prediction_test_bd > seuil_binaire] <- 1
+
+matrice_confusion_bd <- table (donnees_test_bd$fare_amount,
+                            prediction_test_bd_binaire)
+round(matrice_confusion_bd*100/sum(matrice_confusion_bd),1)
 
 
 # Quelle est la qualité de la prédiction sur le jeu de test ?
