@@ -2,7 +2,11 @@
 """
 Created on Wed Feb 13 19:38:53 2019
 
-@author: 
+@author:Groupe 2
+BAKOP-KAMDEM Armel
+LAFAY Anne
+OROZCO-HERNANDEZ Felipe
+
 """
 
 
