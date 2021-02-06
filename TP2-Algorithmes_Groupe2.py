@@ -26,6 +26,8 @@ import sys
 import numpy as np
 #pandas pour lecture donnees
 import pandas as pd
+#sklearn pour la régression logistique
+from sklearn.preprocessing import StandardScaler
 
 #
 # QUESTION 1 - IMPORT DU JEU DE DONNEES
@@ -517,12 +519,6 @@ plt.yticks(())
 plt.show()
 
 
-
-
-
-
-
-
 #
 # QUESTION 6 - REGRESSION LOGISTIQUE
 # 
@@ -539,6 +535,23 @@ plt.show()
 # ---------- Utiliser une librairie usuelle
 
 #CODE
+from sklearn.preprocessing import StandardScaler
+X, y = UsualData_clean[input_var], UsualData_clean["fare_amount"] 
+X_scaled - StandardScaler().fit_transform(X)
+
+y.plot.hist
+y.mean() 
+y.median()
+
+"""
+moyenne 11.337383249349633
+mediane 8.5
+"""
+
+y_binaire = np.zeros(len(y))
+y_binaire[y>y.median()]= 1
+
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -551,6 +564,13 @@ plt.show()
 # ---------- Utiliser une librairie usuelle
 
 #CODE
+from sklearn.linear_model import LogisticRegression
+log_reg = LogisticRegression() 
+log_reg.fit(X_scaled, y_binaire)
+
+prediction_logreg = log_reg.predict(X_scaled) 
+pred_proba_logreg = log_reg.predict_proba(X_scaled)
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -561,11 +581,20 @@ plt.show()
 
 ### Q6.2 - Que pouvez-vous dire des résultats du modèle? Quelles variables sont significatives?
 
+# Les coefficients
+from sklearn.linear_model import LogisticRegression
+print('Coefficients: \n', log_reg.coef_) 
 
-
-#REPONSE ECRITE (3 lignes maximum)
-
-
+"""
+'pickup_longitude' 'pickup_latitude' 'dropoff_longitude' 'dropoff_latitude'
+Coefficients: 
+ [[ 0.00244204 -0.00291349 -0.00429839  0.0008465 ]]
+ 
+Toutes les variables du modèle sont significatives
+Plus les voyages sont long nord-sud plus le tariff sera grande.
+Dans le cas des voyages est-ouest, plus on demarre à l'ouest plus la tariffe augmentera. 
+ 
+"""
 
 ### Q6.3 - Prédire la probabilité que la course soit plus élevée que la médiane
 #           en fonction de nouvelles entrées avec une régression linéaire
@@ -577,6 +606,14 @@ plt.show()
 # ---------- Utiliser une librairie usuelle
 
 #CODE
+idx_train = np.random.rand(len(y_binaire)) < 0.6
+Xtrain, Xtest2 = X_scaled[idx_train], X_scaled[~idx_train]
+ytrain, ytest2 = y_binaire[idx_train], y_binaire[~idx_train]
+
+idx_train2 = np.random.rand(len(ytest2)) < 0.5
+Xtest, Xvalidation = Xtest2[idx_train2], Xtest2[~idx_train2]
+ytest, yvalidation = ytest2[idx_train2], ytest2[~idx_train2]
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -590,6 +627,13 @@ plt.show()
 # ---------- Utiliser une librairie usuelle
 
 #CODE
+from sklearn.linear_model import LogisticRegression
+log_reg = LogisticRegression() 
+log_reg.fit(Xvalidation, yvalidation)
+
+prediction_Xvalidation = log_reg.predict(Xvalidation) 
+pred_proba_Xvalidation = log_reg.predict_proba(Xvalidation)
+
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -599,10 +643,37 @@ plt.show()
 # Calculer la précision (accuracy) et l'AUC de la prédiction sur le jeu de test.
 
 
-
 # ---------- Utiliser une librairie usuelle
 
 #CODE
+from sklearn.linear_model import LogisticRegression
+log_reg = LogisticRegression() 
+log_reg.fit(Xtest, ytest)
+
+prediction_Xtest = log_reg.predict(Xtest) 
+pred_proba_Xtest = log_reg.predict_proba(Xtest)
+
+from sklearn.metrics import confusion_matrix
+confusion_mat = confusion_matrix(ytest, log_reg.predict(Xtest))
+confusion_mat * 100 / sum(sum(confusion_mat))
+
+"""
+array([[5.27768129e+01, 3.60900410e-04],
+       [4.72224653e+01, 3.60900410e-04]])
+"""
+
+from sklearn import metrics
+fpr, tpr, seuils = metrics.roc_curve (ytest, pred_proba_Xtest[:,1])
+roc_auc = metrics.auc (fpr, tpr)
+plt.plot(fpr, tpr, lw=1, alpha=0.3, label='Courbe ROC (AUC = %0.2f)' % roc_auc)
+metrics.accuracy_score(ytest, prediction_Xtest)
+metrics.roc_auc_score(ytest, pred_proba_Xtest[:,1])
+
+"""
+Accuracy: 0.5277717377084087
+AUC: 0.4931444903340024    
+    
+"""
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
@@ -611,8 +682,15 @@ plt.show()
 
 # Quelle est la qualité de la prédiction sur le jeu de test ?
 
+"""
+La qualité de la prédiction du jeu de données est moyenne.
+Avec une accuracy de 52% et une AUC de 49% nous considerons qu'il y a d'autres variables qui affectent le tariff.                    
+"""
 
-#REPONSE ECRITE (3 lignes maximum)
+
+
+
+
 
 
 
