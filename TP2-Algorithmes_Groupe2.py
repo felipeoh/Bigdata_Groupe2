@@ -387,12 +387,12 @@ rmse = (np.sqrt(mean_squared_error(y_scaled,y_predict)))
 
 #calcul du R²
 r2=r2_score(y_scaled,y_predict)
-print(r2)
+print('R2 regression lineaire usual data : %.2f' % r2)
 #R²=0.0001252992167616318
 
-print(regr.intercept_)
+print('Intercept regression lineaire usual data : %.2f' % regr.intercept_)
 #intercept=9.760390606573518e-16
-print(regr.coef_)
+print('Coefficients regression lineaire usual data : %.2f' % regr.coef_)
 #coefficients des variables explicatives "pickup_longitude","pickup_latitude",
 #dropoff_longitude", "dropoff_latitude"
 #[ 0.00351443 -0.00107122  0.00582572 -0.00306093]
@@ -436,7 +436,43 @@ Kurtosis:                      49.207   Cond. No.                         3.23
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
-#CODE
+import dask_ml
+#import dask
+from dask_glm.estimators import LinearRegression
+
+#dask_ml.linear_model.LinearRegression
+
+lr=LinearRegression()
+lr.fit(X_scaled,y_scaled)
+#X_scaled: matrice d entree transformee, y_scaled: matrice de sortie transformee
+#Prediction modele Big Data
+prediction_biglm=lr.predict(X_scaled)
+
+
+
+#Visualisation
+plt.scatter(y_scaled,prediction_biglm,color='black')
+#y_scaled: valeur reelle, prediction_biglm: valeur predite
+plt.xticks(())
+plt.yticks(())
+plt.show()
+
+#Diagnostic des modeles
+prediction_biglm=lr.predict(X_scaled)
+#on applique le score sur entree X_scaled et sortie y_scaled
+lr.score(X_scaled,y_scaled)
+
+#on imprime les valeurs des coefficients qui sont stockes dans l objet
+#regression lineaire
+print('Coefficients regression lineaire big data:\n ',lr.coef_)
+
+#evaluation de l erreur moyenne de prediction par rapport a la veritable valeur
+print("Erreur (RMS) regression lineaire big data: %.2f"
+      %mean_squared_error(y_scaled,prediction_biglm))
+
+print('Variance score regression lineaire bigdata : %.2f' % r2_score(y_scaled,prediction_biglm))
+
+
 
 
 ### Q5.2 - Que pouvez-vous dire des résultats du modèle? Quelles variables sont significatives?
