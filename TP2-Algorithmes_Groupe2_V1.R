@@ -29,6 +29,7 @@ library(bigmemory)
 library(biganalytics)
 library(glmnet)
 library(ROCR)
+library(biglm)
 
 #
 # QUESTION 1 - IMPORT DU JEU DE DONNEES
