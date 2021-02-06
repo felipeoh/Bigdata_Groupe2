@@ -346,6 +346,22 @@ pca_resultat = pca.fit_transform(X_scaled)
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory)
 
 #CODE
+import numpy as np
+import dask.array as da
+from dask_ml.decomposition import PCA
+
+dX = da.from_array(X_scaled_bd, chunks=X_scaled_bd.shape)
+pca = PCA(n_components=4) 
+pca.fit(dX)
+
+print(pca.explained_variance_ratio_) 
+print(pca.singular_values_)
+
+pca = PCA(n_components=4, svd_solver='full')
+pca.fit(dX)
+print(pca.explained_variance_ratio_)
+print(pca.singular_values_)
+
 
 
 ### Q4.2 - Réaliser le diagnostic de variance avec un graphique à barre (barchart)
