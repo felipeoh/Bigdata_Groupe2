@@ -55,7 +55,11 @@ UsualData= pd.read_csv('C:/Users/annea/Desktop/TRAVAIL T2/UE10 BIG DATA/Section 
 
 # ---------- Utiliser une librairie 'Big Data' (Dask ou bigmemory) (version complète du fichier)
 
-#CODE
+import dask.dataframe as dd
+BigData=dd.read_csv('C:/Users/annea/Desktop/TRAVAIL T2/UE10 BIG DATA/Section 2 - Algorithmes du Big Data/Section 2 - TP/TP Big Data Python/train_echantillon.csv')
+
+#NB: le fichier train étant trop lourd pour l'ordinateur, nous allons utiliser le fichier train_echantillon à la fois pour la partie librairie usuelle
+#et pour la partie librairie big data, en donnant des noms différents aux données et en réalisant des traitements différents
 
 
 #
